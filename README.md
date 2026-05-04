@@ -4,7 +4,8 @@ An implementation for the tic-tac-toe game, playable
 For now it is mostly a sketch for the game.
 The next steps include:
 
-- [ ] victory checking
+- [x] victory checking
+- [x] end game
 - [ ] setting up new games
 - [ ] computer opponent
 - [ ] moving board
