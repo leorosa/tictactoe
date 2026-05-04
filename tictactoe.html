@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    button {
+        width:  50px;
+        height: 50px;
+        font-size: 30pt;
+    }
+    button:disabled {
+        color: black;
+    }
+</style>
+<script>
+var c = 'X';
+function setPos(id) {
+    var btn = document.getElementById(id);
+    btn.disabled = true;
+    btn.innerHTML = c;
+    if (c=='X') c = 'O'; else c = 'X';
+}
+</script>
+</head>
+
+<body>
+<br>
+<button id=1 onClick="setPos(1)">&nbsp;</button>
+<button id=2 onClick="setPos(2)">&nbsp;</button>
+<button id=3 onClick="setPos(3)">&nbsp;</button>
+<br>
+<button id=4 onClick="setPos(4)">&nbsp;</button>
+<button id=5 onClick="setPos(5)">&nbsp;</button>
+<button id=6 onClick="setPos(6)">&nbsp;</button>
+<br>
+<button id=7 onClick="setPos(7)">&nbsp;</button>
+<button id=8 onClick="setPos(8)">&nbsp;</button>
+<button id=9 onClick="setPos(9)">&nbsp;</button>
+</body>
+</html>
