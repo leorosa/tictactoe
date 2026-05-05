@@ -37,12 +37,10 @@ function checkVictory(id, player) {
         endGame(player)
     else if (document.getElementById(idS).innerHTML==player && document.getElementById(idN).innerHTML==player)
         endGame(player)
-    else if (id%2==0) {
-        if (document.getElementById(idA).innerHTML==player && document.getElementById(idB).innerHTML==player)
-            endGame(player)
-        else if (document.getElementById(idC).innerHTML==player && document.getElementById(idD).innerHTML==player)
-            endGame(player)
-    }
+    else if (i==j && document.getElementById(idA).innerHTML==player && document.getElementById(idB).innerHTML==player)
+        endGame(player)
+    else if ((i+j)==2 && document.getElementById(idC).innerHTML==player && document.getElementById(idD).innerHTML==player)
+        endGame(player)
 }
 function endGame(player) {
     alert("Player " + player + " won.")
