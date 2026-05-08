@@ -22,25 +22,25 @@ function setPos(id) {
     checkVictory(id, player)
     player = (player=='X') ? 'O' : 'X'
 }
-function checkVictory(id, player) {
-    i = id%3
-    j = Math.floor(id/3)
-    idW = 3*j + (i+2)%3
-    idE = 3*j + (i+1)%3
-    idS = 3*((j+1)%3) + i
-    idN = 3*((j+2)%3) + i
-    idA = 3*((j+1)%3) + (i+1)%3
-    idB = 3*((j+2)%3) + (i+2)%3
-    idC = 3*((j+1)%3) + (3+i-1)%3
-    idD = 3*((j+2)%3) + (3+i-2)%3
-    if (document.getElementById(idW).innerHTML==player && document.getElementById(idE).innerHTML==player)
+function checkVictory(pos, player) {
+    i = pos%3
+    j = Math.floor(pos/3)
+    posW = 3*j + (i+2)%3
+    posE = 3*j + (i+1)%3
+    posS = 3*((j+1)%3) + i
+    posN = 3*((j+2)%3) + i
+    posA = 3*((j+1)%3) + (i+1)%3
+    posB = 3*((j+2)%3) + (i+2)%3
+    posC = 3*((j+1)%3) + (3+i-1)%3
+    posD = 3*((j+2)%3) + (3+i-2)%3
+    if (document.getElementById(posW).innerHTML==player && document.getElementById(posE).innerHTML==player)
         endGame(player)
-    else if (document.getElementById(idS).innerHTML==player && document.getElementById(idN).innerHTML==player)
+    else if (document.getElementById(posS).innerHTML==player && document.getElementById(posN).innerHTML==player)
         endGame(player)
-    else if (i==j && document.getElementById(idA).innerHTML==player && document.getElementById(idB).innerHTML==player)
+    else if (i==j && document.getElementById(posA).innerHTML==player && document.getElementById(posB).innerHTML==player)
         endGame(player)
-    else if ((i+j)==2 && document.getElementById(idC).innerHTML==player && document.getElementById(idD).innerHTML==player)
-        endGame(player)
+    else if ((i+j)==2 && document.getElementById(posC).innerHTML==player && document.getElementById(posD).innerHTML==player)
+            endGame(player)
 }
 function endGame(player) {
     alert("Player " + player + " won.")
@@ -51,6 +51,16 @@ function endGame(player) {
 </head>
 
 <body>
+<label for="gridSize">grid size</label>
+<input id="gridSize" type=number value=3 min=2 style="width:25px" disabled=true>
+<br>
+<input id="moveTable" type=checkbox disabled=true>
+<label for="moveTable">moving table</label>
+<br>
+<input id="3D" type=checkbox disabled=true>
+<label for="3D">3D</label>
+<br>
+
 <br>
 <button id=0 onClick="setPos(0)">&nbsp;</button>
 <button id=1 onClick="setPos(1)">&nbsp;</button>
