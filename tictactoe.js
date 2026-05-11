@@ -17,6 +17,7 @@ function newBoard() {
         center = Math.floor(gridSize/2) + gridSize*Math.floor(gridSize/2)
     } else {
         hasCenter = false
+        center = -1
     }
     maxPos = gridSize*gridSize
     threeD = document.getElementById("3D").checked
@@ -34,20 +35,50 @@ function newBoard() {
     }
     if (document.getElementById('computerFirst').checked) {
         if (hasCenter)
-            document.getElementById(center).innerHTML = 'O'
+            setPos(center, 'O')
         else
-            document.getElementById(0).innerHTML = 'O'
+            setPos(0, 'O')
     }
 }
 
 function play(pos) {
     setPos(pos, 'X')
-    if (hasFreeCells()) {
-        while (true) {
-            pos = Math.floor(Math.random()*maxPos)
-            if (document.getElementById(pos).innerHTML=="&nbsp;") break
+    if (hasFreeCells()) { // computer logic:
+        pos = -1;
+        var freePos = -1;
+        var valuePos = -1;
+        var valueMax = -1;
+        for (pos=0; pos<maxPos; pos++) {
+            valuePos = -2;
+            if (isCellFree(pos)) {
+                valuePos = 0;
+                if (checkVictory(pos, 'O')>0) { // return victorious position immediately
+                    return pos;
+                } else if (checkVictory(pos, 'X')>0) { // avoid losing
+                    valuePos = 18;
+                } else if (hookTest(pos, 'X')) {
+                    valuePos = 16;
+                } else if (hookTest(pos, 'O')) {
+                    valuePos = 14;
+                } else if (pos==center) {
+                    valuePos = 12;
+                } else if (hookFuture(pos, 'O')) {
+                    valuePos = 10;
+                } else if (hookFuture(pos, 'X')) {
+                    valuePos = 8;
+                } else if (hookTest(pos, '&nbsp;')) { // priorize free line/column/diagonal
+                    valuePos = 4;
+                    if (isVertex(pos)) valuePos += 2;
+                } else if (isVertex(pos)) {
+                    valuePos = 2;
+                }
+                if (valuePos>valueMax) {
+                    valueMax = valuePos - Math.floor(Math.random()*1.999); // a touch of randomness...
+                    freePos = pos;
+                }
+            }
         }
-        setPos(pos, 'O')
+        setPos(freePos, 'O')
     }
 }
 
@@ -55,7 +86,8 @@ function setPos(pos, player) {
     var btn = document.getElementById(pos)
     btn.innerHTML = player
     btn.disabled = true
-    checkVictory(pos, player)
+    if (checkVictory(pos, player))
+        endGame(player)
 }
 
 function checkVictory(pos, player) {
@@ -70,13 +102,13 @@ function checkVictory(pos, player) {
     posC = 3*((j+1)%3) + (3+i-1)%3
     posD = 3*((j+2)%3) + (3+i-2)%3
     if (document.getElementById(posW).innerHTML==player && document.getElementById(posE).innerHTML==player)
-        endGame(player)
+        return true
     else if (document.getElementById(posS).innerHTML==player && document.getElementById(posN).innerHTML==player)
-        endGame(player)
+        return true
     else if (i==j && document.getElementById(posA).innerHTML==player && document.getElementById(posB).innerHTML==player)
-        endGame(player)
+        return true
     else if ((i+j)==2 && document.getElementById(posC).innerHTML==player && document.getElementById(posD).innerHTML==player)
-        endGame(player)
+        return true
 }
 
 function endGame(player) {
@@ -87,7 +119,44 @@ function endGame(player) {
 
 function hasFreeCells() {
     for (pos=0; pos<maxPos; pos++)
-        if (document.getElementById(pos).disabled!=true)
+        if (isCellFree(pos))
             return true
     return false
 }
+
+function isCellFree(pos) {
+    if (document.getElementById(pos).disabled==true)
+        return false
+    return true
+}
+
+function hookTest(pos, player) {
+	var hook = 0
+	document.getElementById(pos).innerHTML = player
+	for (pos2=0; pos2<maxPos; pos2++) {
+		if (isCellFree(pos2)) {
+			if (checkVictory(pos2, player)>0) {
+				hook++
+			}
+		}
+	}
+	document.getElementById(pos).innerHTML = '&nbsp;'
+	return hook>1?true:false
+}
+
+function hookFuture(pos, player) {
+	var hook = 0
+	document.getElementById(pos).innerHTML = player
+	for (pos2=0; pos2<maxPos; pos2++) {
+		if (isCellFree(pos2)) {
+			if (hookTest(pos2, player)) {
+				hook++
+				break
+			}
+		}
+	}
+	document.getElementById(pos).innerHTML = '&nbsp;'
+	return hook>1?true:false
+}
+
+function isVertex(pos) { return pos==0 || pos==gridSize-1 || pos==gridSize*(gridSize-1) || pos==gridSize*gridSize-1; }
