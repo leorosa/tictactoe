@@ -1,6 +1,8 @@
 var player = 'X'
 var gridSize = 3
 var maxPos = 3*3
+var hasCenter = true
+var center = 4
 var threeD = false
 
 function newBoard() {
@@ -10,18 +12,31 @@ function newBoard() {
     var board = document.getElementById("board")
     var plane
     gridSize = document.getElementById("gridSize").value
+    if (gridSize%2==1) {
+        hasCenter = true
+        center = Math.floor(gridSize/2) + gridSize*Math.floor(gridSize/2)
+    } else {
+        hasCenter = false
+    }
     maxPos = gridSize*gridSize
     threeD = document.getElementById("3D").checked
-    if (threeD==true)
+    if (threeD==true) {
         maxPos *= gridSize
+        center += gridSize*gridSize*Math.floor(gridSize/2)
+    }
     for (pos=0; pos<maxPos; pos++) {
         if (pos%(gridSize*gridSize)==0) {
             board.insertAdjacentHTML('beforeend', '<div id="p'+(pos/(gridSize*gridSize))+'"></div>')
             plane = document.getElementById('p'+(pos/gridSize/gridSize))
-        }
-        if (pos%gridSize==0)
-            plane.insertAdjacentHTML('beforeend', '<br id="l'+(pos/gridSize)+'">')
+        } else if (pos%gridSize==0)
+            plane.insertAdjacentHTML('beforeend', '<br>')
         plane.insertAdjacentHTML('beforeend', '<button id='+pos+' onClick="play('+pos+')">&nbsp;</button>')
+    }
+    if (document.getElementById('computerFirst').checked) {
+        if (hasCenter)
+            document.getElementById(center).innerHTML = 'O'
+        else
+            document.getElementById(0).innerHTML = 'O'
     }
 }
 
