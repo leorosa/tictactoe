@@ -4,7 +4,6 @@ var maxPos = 3*3
 var threeD = false
 
 function newBoard() {
-    player = 'X'
     for (pos=0; pos<maxPos; pos++)
         if (pos%(gridSize*gridSize)==0)
             document.getElementById('p'+(pos/gridSize/gridSize)).remove()
@@ -22,16 +21,26 @@ function newBoard() {
         }
         if (pos%gridSize==0)
             plane.insertAdjacentHTML('beforeend', '<br id="l'+(pos/gridSize)+'">')
-        plane.insertAdjacentHTML('beforeend', '<button id='+pos+' onClick="setPos('+pos+')">&nbsp;</button>')
+        plane.insertAdjacentHTML('beforeend', '<button id='+pos+' onClick="advance('+pos+')">&nbsp;</button>')
     }
 }
 
-function setPos(pos) {
+function play(pos) {
+    setPos(pos, 'X')
+    console.log(pos+' X')
+    while (true) {
+         pos = Math.floor(Math.random()*maxPos)
+         if (document.getElementById(pos).innerHTML=="&nbsp;") break
+    }
+    setPos(pos, 'O')
+    console.log(pos+' O')
+}
+
+function setPos(pos, player) {
     var btn = document.getElementById(pos)
     btn.disabled = true
     btn.innerHTML = player
     checkVictory(pos, player)
-    player = (player=='X') ? 'O' : 'X'
 }
 
 function checkVictory(pos, player) {
@@ -52,11 +61,11 @@ function checkVictory(pos, player) {
     else if (i==j && document.getElementById(posA).innerHTML==player && document.getElementById(posB).innerHTML==player)
         endGame(player)
     else if ((i+j)==2 && document.getElementById(posC).innerHTML==player && document.getElementById(posD).innerHTML==player)
-            endGame(player)
+        endGame(player)
 }
 
 function endGame(player) {
     alert("Player " + player + " won.")
-    for (pos=0; pos<9; pos++)
+    for (pos=0; pos<maxPos; pos++)
         document.getElementById(pos).disabled = true
 }
