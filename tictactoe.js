@@ -21,7 +21,7 @@ function newBoard() {
         }
         if (pos%gridSize==0)
             plane.insertAdjacentHTML('beforeend', '<br id="l'+(pos/gridSize)+'">')
-        plane.insertAdjacentHTML('beforeend', '<button id='+pos+' onClick="advance('+pos+')">&nbsp;</button>')
+        plane.insertAdjacentHTML('beforeend', '<button id='+pos+' onClick="play('+pos+')">&nbsp;</button>')
     }
 }
 
