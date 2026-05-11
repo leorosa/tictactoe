@@ -27,19 +27,19 @@ function newBoard() {
 
 function play(pos) {
     setPos(pos, 'X')
-    console.log(pos+' X')
-    while (true) {
-         pos = Math.floor(Math.random()*maxPos)
-         if (document.getElementById(pos).innerHTML=="&nbsp;") break
+    if (hasFreeCells()) {
+        while (true) {
+            pos = Math.floor(Math.random()*maxPos)
+            if (document.getElementById(pos).innerHTML=="&nbsp;") break
+        }
+        setPos(pos, 'O')
     }
-    setPos(pos, 'O')
-    console.log(pos+' O')
 }
 
 function setPos(pos, player) {
     var btn = document.getElementById(pos)
-    btn.disabled = true
     btn.innerHTML = player
+    btn.disabled = true
     checkVictory(pos, player)
 }
 
@@ -68,4 +68,11 @@ function endGame(player) {
     alert("Player " + player + " won.")
     for (pos=0; pos<maxPos; pos++)
         document.getElementById(pos).disabled = true
+}
+
+function hasFreeCells() {
+    for (pos=0; pos<maxPos; pos++)
+        if (document.getElementById(pos).disabled!=true)
+            return true
+    return false
 }
