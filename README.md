@@ -7,7 +7,7 @@ The next steps include:
 - [x] victory checking
 - [x] end game
 - [x] setting up new games
-- [ ] computer opponent
+- [x] computer opponent
 - [ ] moving board
 - [ ] NxN board
 - [ ] 3D board
