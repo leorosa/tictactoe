@@ -17,7 +17,7 @@
             margin: 10px;
         }
     </style>
-    <script src="tictactoe.js"></script>
+    <script src="tictactoe2.js"></script>
 </head>
 
 <body>
@@ -29,13 +29,15 @@
     <br>
     <input id="moveTable" type=checkbox>
     <label for="moveTable">moving board</label>
+    <br>
+    <input id="computerFirst" type=checkbox onchange="newBoard()">
+    <label for="computerFirst">computer play first</label>
     <div id='board' style="display:flex;flex-wrap:wrap;">
         <div id='p0'>
-            <br id='l0'>
             <button id=0 onClick="play(0)">&nbsp;</button><button id=1 onClick="play(1)">&nbsp;</button><button id=2 onClick="play(2)">&nbsp;</button>
-            <br id='l1'>
+            <br>
             <button id=3 onClick="play(3)">&nbsp;</button><button id=4 onClick="play(4)">&nbsp;</button><button id=5 onClick="play(5)">&nbsp;</button>
-            <br id='l2'>
+            <br>
             <button id=6 onClick="play(6)">&nbsp;</button><button id=7 onClick="play(7)">&nbsp;</button><button id=8 onClick="play(8)">&nbsp;</button>
         </div>
     </div>
