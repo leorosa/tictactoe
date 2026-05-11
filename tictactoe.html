@@ -15,11 +15,11 @@
 </style>
 <script>
 var player = 'X';
-function setPos(id) {
-    var btn = document.getElementById(id)
+function setPos(pos) {
+    var btn = document.getElementById(pos)
     btn.disabled = true
     btn.innerHTML = player
-    checkVictory(id, player)
+    checkVictory(pos, player)
     player = (player=='X') ? 'O' : 'X'
 }
 function checkVictory(pos, player) {
