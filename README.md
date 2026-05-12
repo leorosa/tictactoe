@@ -10,4 +10,4 @@ The next steps include:
 - [x] computer opponent
 - [ ] moving board
 - [x] NxN board
-- [ ] 3D board
+- [x] 3D board
