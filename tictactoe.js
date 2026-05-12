@@ -57,8 +57,6 @@ function play(pos) {
     if (hasFreeCells()) {
         setPos(computerPos(), 'O')
     }
-    if (!hasFreeCells())
-        endGame("No player")
 }
 
 function computerPos() {
@@ -104,6 +102,8 @@ function setPos(pos, player) {
     btn.disabled = true
     if (checkVictory(pos, player)>0)
         endGame(player)
+    else if (!hasFreeCells())
+        endGame("No player")
 }
 
 function checkVictory(pos, player) {
