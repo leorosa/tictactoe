@@ -57,6 +57,8 @@ function play(pos) {
     if (hasFreeCells()) {
         setPos(computerPos(), 'O')
     }
+    if (!hasFreeCells())
+        endGame("No player")
 }
 
 function computerPos() {
@@ -149,7 +151,7 @@ function checkVictory(pos, player) {
 }
 
 function endGame(player) {
-    alert("Player " + player + " won.")
+    alert(player + " won.")
     for (pos=0; pos<MAXPOS; pos++)
         document.getElementById(pos).disabled = true
 }
