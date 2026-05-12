@@ -9,5 +9,5 @@ The next steps include:
 - [x] setting up new games
 - [x] computer opponent
 - [ ] moving board
-- [ ] NxN board
+- [x] NxN board
 - [ ] 3D board
