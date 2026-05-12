@@ -1,8 +1,16 @@
-var FLAGI = 1
+var FLAGI = 1 // victory flags (column, line, diagonals)
 var FLAGJ = 2
 var FLAGK = 4
 var FLAGIJP = 8
 var FLAGIJS = 16
+var FLAGIKP = 32
+var FLAGIKS = 64
+var FLAGJKP = 128
+var FLAGJKS = 256
+var FLAGA = 512
+var FLAGB = 1024
+var FLAGC = 2048
+var FLAGD = 4096
 
 var NGRID = 3
 var ZGRID = 1
@@ -101,17 +109,41 @@ function checkVictory(pos, player) {
     var j = idxJ(pos)
     var k = idxK(pos)
     var res = FLAGI + FLAGJ
+	if (ZGRID==NGRID) {
+        res += FLAGK;
+        if (i==k) res += FLAGIKP;
+        if (i==NGRID-1-k) res += FLAGIKS;
+        if (j==k) res += FLAGJKP;
+        if (j==NGRID-1-k) res += FLAGJKS;
+    }
     if (i==j) {
-        res += FLAGIJP
+        res += FLAGIJP;
+        if (ZGRID==NGRID) {
+            if (i==k) res += FLAGA;
+            if (i==NGRID-1-k) res += FLAGC;
+        }
     }
     if (i==NGRID-1-j) {
-        res += FLAGIJS
+        res += FLAGIJS;
+        if (ZGRID==NGRID) {
+            if (i==k) res += FLAGB;
+            if (i==NGRID-1-k) res += FLAGD;
+        }
     }
     for (n=1; n<NGRID; n++) {
         if ((res&FLAGI)>0 && document.getElementById(ijk2pos((i+n)%NGRID,j,k)).innerHTML!=player) { res -= FLAGI }
         if ((res&FLAGJ)>0 && document.getElementById(ijk2pos(i,(j+n)%NGRID,k)).innerHTML!=player) { res -= FLAGJ }
+        if ((res&FLAGK)>0 && document.getElementById(ijk2pos(i,j,(k+n)%ZGRID)).innerHTML!=player) { res -= FLAGK; }
         if ((res&FLAGIJP)>0 && document.getElementById(ijk2pos((i+n)%NGRID,(j+n)%NGRID,k)).innerHTML!=player) { res -= FLAGIJP }
         if ((res&FLAGIJS)>0 && document.getElementById(ijk2pos((NGRID+i-n)%NGRID,(j+n)%NGRID,k)).innerHTML!=player) { res -= FLAGIJS }
+        if ((res&FLAGIKP)>0 && document.getElementById(ijk2pos((i+n)%NGRID,j,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGIKP; }
+        if ((res&FLAGIKS)>0 && document.getElementById(ijk2pos((NGRID+i-n)%NGRID,j,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGIKS; }
+        if ((res&FLAGJKP)>0 && document.getElementById(ijk2pos(i,(j+n)%NGRID,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGJKP; }
+        if ((res&FLAGJKS)>0 && document.getElementById(ijk2pos(i,(NGRID+j-n)%NGRID,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGJKS; }
+        if ((res&FLAGA)>0 && document.getElementById(ijk2pos((i+n)%NGRID,(j+n)%NGRID,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGA; }
+        if ((res&FLAGB)>0 && document.getElementById(ijk2pos((i+n)%NGRID,(NGRID+j-n)%NGRID,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGB; }
+        if ((res&FLAGC)>0 && document.getElementById(ijk2pos((NGRID+i-n)%NGRID,(NGRID+j-n)%NGRID,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGC; }
+        if ((res&FLAGD)>0 && document.getElementById(ijk2pos((NGRID+i-n)%NGRID,(j+n)%NGRID,(k+n)%NGRID)).innerHTML!=player) { res -= FLAGD; }
     }
     return res
 }
