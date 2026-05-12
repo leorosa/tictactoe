@@ -25,9 +25,10 @@ function newBoard() {
     var board = document.getElementById("board")
     var plane
     NGRID = document.getElementById("gridSize").value
-    if (document.getElementById("3D").checked) {
+    if (document.getElementById("3D").checked)
         ZGRID = NGRID
-    }
+    else
+        ZGRID = 1
     MAXPOS = NGRID*NGRID*ZGRID
     if (NGRID%2==1) {
         HASCENTER = true
