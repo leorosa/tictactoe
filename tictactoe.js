@@ -15,6 +15,7 @@ var FLAGD = 4096
 var NGRID = 3
 var ZGRID = 1
 var MAXPOS = 3*3
+var OFFSET = 1
 var HASCENTER = true
 var CENTER = 4
 
@@ -30,6 +31,7 @@ function newBoard() {
     else
         ZGRID = 1
     MAXPOS = NGRID*NGRID*ZGRID
+    OFFSET = (NGRID-1) / 2
     if (NGRID%2==1) {
         HASCENTER = true
         CENTER = Math.floor(NGRID/2) + NGRID*Math.floor(NGRID/2) + NGRID*NGRID*Math.floor(ZGRID/2)
@@ -55,9 +57,10 @@ function newBoard() {
 
 function play(pos) {
     setPos(pos, 'X')
-    if (hasFreeCells()) {
+    if (hasFreeCells())
         setPos(computerPos(), 'O')
-    }
+    if (document.getElementById('moveTable').checked)
+        moveTable();
 }
 
 function computerPos() {
@@ -171,32 +174,81 @@ function isCellFree(pos) {
 }
 
 function hookTest(pos, player) {
-	var hook = 0
-	document.getElementById(pos).innerHTML = player
-	for (pos2=0; pos2<MAXPOS; pos2++) {
-		if (isCellFree(pos2)) {
-			if (checkVictory(pos2, player)>0) {
-				hook++
-			}
-		}
-	}
-	document.getElementById(pos).innerHTML = '&nbsp;'
-	return hook>1?true:false
+    var hook = 0
+    document.getElementById(pos).innerHTML = player
+    for (pos2=0; pos2<MAXPOS; pos2++) {
+        if (isCellFree(pos2)) {
+            if (checkVictory(pos2, player)>0) {
+                hook++
+            }
+        }
+    }
+    document.getElementById(pos).innerHTML = '&nbsp;'
+    return hook>1?true:false
 }
 
 function hookFuture(pos, player) {
-	var hook = 0
-	document.getElementById(pos).innerHTML = player
-	for (pos2=0; pos2<MAXPOS; pos2++) {
-		if (isCellFree(pos2)) {
-			if (hookTest(pos2, player)) {
-				hook++
-				break
-			}
-		}
-	}
-	document.getElementById(pos).innerHTML = '&nbsp;'
-	return hook>1?true:false
+    var hook = 0
+    document.getElementById(pos).innerHTML = player
+    for (pos2=0; pos2<MAXPOS; pos2++) {
+        if (isCellFree(pos2)) {
+            if (hookTest(pos2, player)) {
+                hook++
+                break
+            }
+        }
+    }
+    document.getElementById(pos).innerHTML = '&nbsp;'
+    return hook>1?true:false
+}
+
+function movePos(pos, option) {
+    if (option==1)
+        return flipI(pos);
+    else if (option==2)
+        return flipJ(pos);
+    else if (option==3)
+        return rotIJA(pos);
+    else if (option==4)
+        return rotIJC(pos);
+    else if (option==5)
+        return flipK(pos);
+    else if (option==6)
+        return rotIKA(pos);
+    else if (option==7)
+        return rotIKC(pos);
+    else if (option==8)
+        return rotJKA(pos);
+    else if (option==9)
+        return rotJKC(pos);
+    else if (option==10)
+        return shiftI(pos);
+    else if (option==11)
+        return shiftJ(pos);
+    else if (option==12)
+        return shiftK(pos);
+    return pos
+}
+
+function moveTable() {
+    var option = Math.floor(Math.random()*5)
+    if (ZGRID==NGRID)
+        option = Math.floor(Math.random()*10)
+    if (option==0) return
+    var newTable = Array(MAXPOS)
+//  for (pos=0; pos<MAXPOS; pos++)
+//      newTable.push('&nbsp;')
+    for (pos=0; pos<MAXPOS; pos++) {
+        cell = document.getElementById(pos)
+        newTable[movePos(pos, option)] = cell.innerHTML
+        cell.disabled = false
+    }
+    for (pos=0; pos<MAXPOS; pos++) {
+        cell = document.getElementById(pos)
+        cell.innerHTML = newTable[pos]
+        if (newTable[pos]!='&nbsp;')
+            cell.disabled = true
+    }
 }
 
 function isVertex(pos) { return pos==0 || pos==NGRID-1 || pos==NGRID*(NGRID-1) || pos==NGRID*NGRID-1; }
@@ -204,3 +256,15 @@ function idxI(pos) { return pos%NGRID; }
 function idxJ(pos) { return Math.floor(pos/NGRID)%NGRID; }
 function idxK(pos) { return Math.floor(pos/NGRID/NGRID)%ZGRID; }
 function ijk2pos(i, j, k) { return NGRID*NGRID*(k%ZGRID) + NGRID*(j%NGRID) + i%NGRID; }
+function flipI(pos) { return ijk2pos((NGRID-1-idxI(pos))%NGRID , idxJ(pos) , idxK(pos)); }
+function flipJ(pos) { return ijk2pos(idxI(pos) , (NGRID-1-idxJ(pos))%NGRID , idxK(pos)); }
+function flipK(pos) { return ijk2pos(idxI(pos) , idxJ(pos) , (ZGRID-1-idxK(pos))%ZGRID); }
+function shiftI(pos) { return ijk2pos((1+idxI(pos))%NGRID , idxJ(pos) , idxK(pos)); }
+function shiftJ(pos) { return ijk2pos(idxI(pos) , (1+idxJ(pos))%NGRID , idxK(pos)); }
+function shiftK(pos) { return ijk2pos(idxI(pos) , idxJ(pos) , (1+idxK(pos))%ZGRID); }
+function rotIJA(pos) { return ijk2pos(Math.floor(OFFSET-(idxJ(pos)-OFFSET)) , Math.floor(OFFSET+(idxI(pos)-OFFSET)) , idxK(pos)); }
+function rotIJC(pos) { return ijk2pos(Math.floor(OFFSET+(idxJ(pos)-OFFSET)) , Math.floor(OFFSET-(idxI(pos)-OFFSET)) , idxK(pos)); }
+function rotIKA(pos) { return ijk2pos(Math.floor(OFFSET-(idxK(pos)-OFFSET)) , idxJ(pos) , Math.floor(OFFSET+(idxI(pos)-OFFSET))); }
+function rotIKC(pos) { return ijk2pos(Math.floor(OFFSET+(idxK(pos)-OFFSET)) , idxJ(pos) , Math.floor(OFFSET-(idxI(pos)-OFFSET))); }
+function rotJKA(pos) { return ijk2pos(idxI(pos) , Math.floor(OFFSET-(idxK(pos)-OFFSET)) , Math.floor(OFFSET+(idxJ(pos)-OFFSET))); }
+function rotJKC(pos) { return ijk2pos(idxI(pos) , Math.floor(OFFSET+(idxK(pos)-OFFSET)) , Math.floor(OFFSET-(idxJ(pos)-OFFSET))); }
