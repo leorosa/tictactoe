@@ -56,11 +56,11 @@ function newBoard() {
 }
 
 function play(pos) {
+    if (document.getElementById('moveTable').checked)
+        moveTable();
     setPos(pos, 'X')
     if (hasFreeCells())
         setPos(computerPos(), 'O')
-    if (document.getElementById('moveTable').checked)
-        moveTable();
 }
 
 function computerPos() {
