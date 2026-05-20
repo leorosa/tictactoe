@@ -53,6 +53,7 @@ function newBoard() {
         else
             setPos(0, 'O')
     }
+	document.getElementById('msg').innerHTML = ''
 }
 
 function play(pos) {
@@ -155,7 +156,7 @@ function checkVictory(pos, player) {
 }
 
 function endGame(player) {
-    alert(player + " won.")
+	document.getElementById('msg').innerHTML = player + " won."
     for (pos=0; pos<MAXPOS; pos++)
         document.getElementById(pos).disabled = true
 }
