@@ -41,11 +41,11 @@ function newBoard() {
     }
     for (pos=0; pos<MAXPOS; pos++) {
         if (pos%(NGRID*NGRID)==0) {
-            board.insertAdjacentHTML('beforeend', '<div id="p'+(pos/(NGRID*NGRID))+'"></div>')
+            board.innerHTML += '<div id="p'+(pos/(NGRID*NGRID))+'"></div>'
             plane = document.getElementById('p'+(pos/NGRID/NGRID))
         } else if (pos%NGRID==0)
-            plane.insertAdjacentHTML('beforeend', '<br>')
-        plane.insertAdjacentHTML('beforeend', '<button id='+pos+' onClick="play('+pos+')">&nbsp;</button>')
+            plane.innerHTML += '<br>'
+        plane.innerHTML += '<button id='+pos+' onClick="play('+pos+')">&nbsp;</button>'
     }
     if (document.getElementById('computerFirst').checked) {
         if (HASCENTER)
@@ -53,7 +53,7 @@ function newBoard() {
         else
             setPos(0, 'O')
     }
-	document.getElementById('msg').innerHTML = ''
+    document.getElementById('msg').innerHTML = ''
 }
 
 function play(pos) {
@@ -156,7 +156,7 @@ function checkVictory(pos, player) {
 }
 
 function endGame(player) {
-	document.getElementById('msg').innerHTML = player + " won."
+    document.getElementById('msg').innerHTML = player + " won."
     for (pos=0; pos<MAXPOS; pos++)
         document.getElementById(pos).disabled = true
 }
