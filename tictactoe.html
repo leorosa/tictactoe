@@ -16,7 +16,7 @@
             <legend>Game Settings</legend>
             <div>
                 <label for="gridSize">Grid size:</label>
-                <input id="gridSize" type="number" value="3" min="2" style="width:25px" onchange="newBoard()">
+                <input id="gridSize" type="number" value="3" min="2" style="width:50px" onchange="newBoard()">
             </div>
             <div>
                 <input id="3D" type="checkbox" onchange="newBoard()">
@@ -34,7 +34,9 @@
         </fieldset>
 
         <section aria-label="Game board">
-            <div id="board" style="display:flex;flex-wrap:wrap;"></div>
+            <div id="board" style="display:flex;flex-wrap:wrap;">
+                <div id="p0"></div>
+            </div>
         </section>
 
         <p id="msg" role="status" aria-live="polite"></p>
