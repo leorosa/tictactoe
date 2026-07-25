@@ -4,40 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        button {
-            width:  50px;
-            height: 50px;
-            font-size: 30pt;
-        }
-        button:disabled {
-            color: black;
-        }
-        div {
-            margin: 10px;
-        }
-    </style>
-    <script src="tictactoe.js"></script>
+    <title>Tic Tac Toe Game</title>
+    <link rel="stylesheet" href="tictactoe.css">
 </head>
 
 <body>
-    <label for="gridSize">grid size</label>
-    <input id="gridSize" type=number value=3 min=2 style="width:25px" onchange="newBoard()">
-    <br>
-    <input id="3D" type=checkbox onchange="newBoard()">
-    <label for="3D">3D</label>
-    <br>
-    <input id="moveTable" type=checkbox>
-    <label for="moveTable">moving board</label>
-    <br>
-    <input id="computerFirst" type=checkbox onchange="newBoard()">
-    <label for="computerFirst">computer play first</label>
-    <br>
-    <input type=button onclick="newBoard()" value="New Game">
-    <div id='board' style="display:flex;flex-wrap:wrap;">
-        <div id='p0'></div>
-    </div>
-    <p id='msg'></p>
-    <script>newBoard()</script>
+    <main>
+        <h1>Tic Tac Toe</h1>
+        
+        <fieldset>
+            <legend>Game Settings</legend>
+            <div>
+                <label for="gridSize">Grid size:</label>
+                <input id="gridSize" type="number" value="3" min="2" style="width:25px" onchange="newBoard()">
+            </div>
+            <div>
+                <input id="3D" type="checkbox" onchange="newBoard()">
+                <label for="3D">3D Mode</label>
+            </div>
+            <div>
+                <input id="moveTable" type="checkbox">
+                <label for="moveTable">Moving board</label>
+            </div>
+            <div>
+                <input id="computerFirst" type="checkbox" onchange="newBoard()">
+                <label for="computerFirst">Computer plays first</label>
+            </div>
+            <button type="button" onclick="newBoard()">New Game</button>
+        </fieldset>
+
+        <section aria-label="Game board">
+            <div id="board" style="display:flex;flex-wrap:wrap;"></div>
+        </section>
+
+        <p id="msg" role="status" aria-live="polite"></p>
+    </main>
+
+    <noscript>
+        <p><strong>This game requires JavaScript to be enabled.</strong></p>
+    </noscript>
+
+    <script src="tictactoe.js"></script>
 </body>
+
 </html>
